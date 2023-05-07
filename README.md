@@ -1,4 +1,5 @@
-# OutboxPattern
+# Outbox.Pattern.Background.Job
+- outbox-pattern
 - clean architecture
 - .net 7
 - cqrs
