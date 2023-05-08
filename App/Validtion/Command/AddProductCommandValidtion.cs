@@ -6,8 +6,18 @@ namespace App.Validtion.Command
 {
     public class AddProductCommandValidtion : AbstractValidator<AddProductCommand>
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public DateTime CreateTime { get; set; }
+
+        public AddProductCommandValidtion()
+        {
+            RuleFor(command=> command.Name)
+                .NotEmpty()
+                .NotNull()
+                .WithName("NameIsNull"); 
+            
+            RuleFor(command=> command.Description)
+                .NotEmpty()
+                .NotNull()
+                .WithName("DescriptionIsNull");
+        }
     }
 }

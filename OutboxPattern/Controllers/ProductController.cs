@@ -18,15 +18,15 @@ namespace OutboxPattern.Controllers
 
         [HttpPost]
         [Route("")]
-        public async Task<IActionResult> PostProduct([FromBody] AddProductCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> Post([FromBody] AddProductCommand command, CancellationToken cancellationToken)
         {
             await _mediator.Send(command, cancellationToken);
             return Ok();
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("")]
-        public async Task<IActionResult> GetProduct(CancellationToken cancellationToken)
+        public async Task<IActionResult> Get(CancellationToken cancellationToken)
         {
             await _mediator.Send(new ProductQuery(), cancellationToken);
             return Ok();
