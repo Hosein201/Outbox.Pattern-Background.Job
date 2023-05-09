@@ -9,9 +9,6 @@
 - redisearch (nosql)
 - sql server
 - restfull api
-- docker
-- docker compose
-- api versioning
 - repository
 - ...
 
