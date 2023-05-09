@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using App.Request.Event;
 using MediatR;
 
 namespace App.Request.Query
 {
-    public class ProductQuery : IRequest
+    public class ProductQuery : IRequest<List<AddProductCommandEvent>>
     {
     }
 }

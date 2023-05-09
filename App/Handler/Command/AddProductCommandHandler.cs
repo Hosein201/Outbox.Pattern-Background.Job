@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace App.Handler.Command
 {
-    public class AddProductCommandHandler : IRequestHandler<AddProductCommand>
+    public class AddProductCommandHandler : IRequestHandler<AddProductCommand, Unit>
     {
         private readonly IProductRepository _productRepository;
         private readonly IOutboxMessageRepository _outboxMessageRepository;
@@ -17,7 +17,7 @@ namespace App.Handler.Command
             _outboxMessageRepository = outboxMessageRepository;
         }
 
-        public async Task Handle(AddProductCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(AddProductCommand request, CancellationToken cancellationToken)
         {
             var product = new Data.Product
             {
@@ -30,12 +30,19 @@ namespace App.Handler.Command
 
             await _outboxMessageRepository.AddAsync(new Data.OutboxMessage
             {
-                Content = JsonConvert.SerializeObject(product),
+                Content = JsonConvert.SerializeObject(new AddProductCommandEvent
+                {
+                    CreateTime = product.CreateTime,
+                    Description = product.Description,
+                    Name = product.Name
+                }),
                 CreateTime = DateTime.UtcNow,
                 ProcessdDate = null,
-                Type = typeof(AddProductCommandEvent).FullName + ", " + typeof(AddProductCommandEvent).Assembly.GetName().Name
+                Type = typeof(AddProductCommandEvent).FullName + "," + typeof(AddProductCommandEvent).Assembly.GetName().Name
 
             }, true, cancellationToken);
+
+            return Unit.Value;
         }
     }
 }

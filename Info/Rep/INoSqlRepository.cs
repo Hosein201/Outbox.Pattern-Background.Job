@@ -18,6 +18,7 @@ namespace Info.Rep
         Task<Entity> FirstOrDefaultAsync(Expression<Func<Entity, bool>> expression);
         Task<List<Entity>> GetEntitiesAsync(Expression<Func<Entity, bool>> expression, Expression<Func<Entity, Entity>> selectItem);
         Task<List<Entity>> GetEntitiesAsync(Expression<Func<Entity, bool>> expression);
+        List<Entity> GetEntitiesAsync();
         Task<List<string>> InsertAsync(IEnumerable<Entity> items);
         Task<string> InsertAsync(Entity entity);
         Task SaveAsync();
@@ -30,14 +31,15 @@ namespace Info.Rep
         where Entity : class
     {
 
-        private readonly IRedisConnection RedisConnection;
+
         private readonly IRedisCollection<Entity> RedisCollection;
 
-        public NoSqlRepository(RediSearchConfig rediSearchConfig)
+        public NoSqlRepository(RediSearchConfiguration rediSearchConfig)
         {
             var provider = new RedisConnectionProvider($"redis://{rediSearchConfig.Conn}");
-            RedisConnection = provider.Connection;
-            RedisConnection.CreateIndex(typeof(Entity));
+           var redisConnection = provider.Connection;
+            // redisConnection.DropIndex(typeof(Entity));
+             redisConnection.CreateIndex(typeof(Entity));
             RedisCollection = provider.RedisCollection<Entity>();
             // CreateIndex();
 
@@ -47,6 +49,12 @@ namespace Info.Rep
         public async Task<List<Entity>> GetEntitiesAsync(Expression<Func<Entity, bool>> expression, Expression<Func<Entity, Entity>> selectItem)
         {
             return (List<Entity>)await RedisCollection.Where(expression).Select(selectItem).ToListAsync();
+        }
+        
+        public  List<Entity> GetEntitiesAsync()
+        {
+            var x =RedisCollection.ToList();
+            return x;
         }
 
         public async Task<List<Entity>> GetEntitiesAsync(Expression<Func<Entity, bool>> expression)

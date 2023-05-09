@@ -2,9 +2,15 @@
 {
     public class AppSetting
     {
-        public RediSearchConfig RediSearchConfig { get; set; }
+        public DbContextConfiguration DbContextConfiguration { get; set; }
+        public RediSearchConfiguration RediSearchConfiguration { get; set; }
     }
-    public class RediSearchConfig
+    public class RediSearchConfiguration
+    {
+        public string Conn { get; set; }
+    }
+
+    public class DbContextConfiguration
     {
         public string Conn { get; set; }
     }

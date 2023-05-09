@@ -1,13 +1,23 @@
-﻿using App.Request.Query;
+﻿using App.Request.Event;
+using App.Request.Query;
+using Info.Rep;
 using MediatR;
 
 namespace App.Handler.Query
 {
-    public class ProductQueryHandler : IRequestHandler<ProductQuery>
+    public class ProductQueryHandler : IRequestHandler<ProductQuery, List<AddProductCommandEvent>>
     {
-        public Task Handle(ProductQuery request, CancellationToken cancellationToken)
+        private readonly INoSqlRepository<AddProductCommandEvent> _noSqlRepository;
+
+        public ProductQueryHandler(INoSqlRepository<AddProductCommandEvent> noSqlRepository)
         {
-            throw new NotImplementedException();
+            _noSqlRepository = noSqlRepository;
+        }
+
+
+        public async Task<List<AddProductCommandEvent>> Handle(ProductQuery request, CancellationToken cancellationToken)
+        {
+            return await Task.FromResult(_noSqlRepository.GetEntitiesAsync());
         }
     }
 }

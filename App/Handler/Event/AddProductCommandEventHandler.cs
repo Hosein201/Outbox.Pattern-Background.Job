@@ -16,7 +16,7 @@ namespace App.Handler.Event
         public async Task Handle(AddProductCommandEvent notification, CancellationToken cancellationToken)
         {
             await _noSqlRepository.InsertAsync(notification);
-            await _noSqlRepository.SaveAsync();
+           // await _noSqlRepository.SaveAsync();
         }
     }
 }

@@ -28,8 +28,8 @@ namespace OutboxPattern.Controllers
         [Route("")]
         public async Task<IActionResult> Get(CancellationToken cancellationToken)
         {
-            await _mediator.Send(new ProductQuery(), cancellationToken);
-            return Ok();
+           var x= await _mediator.Send(new ProductQuery(), cancellationToken);
+            return Ok(x);
         }
     }
 }
